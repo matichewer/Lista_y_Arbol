@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1572528223 source:/home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/arbol-test.c
+	"arbol.h"
+	<stdio.h>
+	<stdlib.h>
+
+1572537549 /home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/arbol.h
+	"lista.h"
+
+1572528223 /home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/lista.h
+
+1572528223 source:/home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/arbol.c
+	"arbol.h"
+	<stdio.h>
+	<stdlib.h>
+
+1572528223 source:/home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/lista-test.c
+	"lista.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1572528223 source:/home/wecher/MEGA/01_ESTUDIOS/2019_Segundo_Cuatrimestre/Organizacion_de_computadoras/TPs Resueltos/Lista_y_Arbol/lista.c
+	"lista.h"
+	<stdio.h>
+	<stdlib.h>
+
