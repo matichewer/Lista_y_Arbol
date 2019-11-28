@@ -1,8 +1,12 @@
-#include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lista.h"
+
+
+// Funciones extras
 static void destruir_recursivo(tPosicion pos, void (*fEliminar)(tElemento));
+
 
 /**
  Inicializa una lista vacía.
@@ -46,6 +50,8 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)){
     aEliminar = p->siguiente;
     p->siguiente = aEliminar->siguiente;
     fEliminar(aEliminar->elemento);
+    aEliminar->elemento=NULL;
+    aEliminar->siguiente=NULL;
     free(aEliminar);
 }
 
@@ -57,7 +63,6 @@ static void destruir_recursivo(tPosicion pos, void (*fEliminar)(tElemento)){
     fEliminar(pos->elemento);
     pos->elemento = NULL;
     free(pos);
-
 }
 
 /**
@@ -125,10 +130,16 @@ tPosicion l_anterior(tLista l, tPosicion p){
  Si L es vacía, primera(L) = ultima(L) = fin(L).
 **/
 tPosicion l_ultima(tLista l){
-    tPosicion pos = l;
-    while((pos->siguiente!=NULL) && (pos->siguiente->siguiente!=NULL))
-        pos = pos->siguiente;
-    return pos;
+    tPosicion toReturn, fin;
+
+    toReturn = (tPosicion) l;
+    fin = (tPosicion) l->siguiente;
+
+    while(fin->siguiente != NULL){
+        toReturn = fin;
+        fin = fin->siguiente;
+    }
+    return toReturn;
 }
 
 /**
@@ -147,8 +158,8 @@ tPosicion l_fin(tLista l){
 **/
 int l_longitud(tLista l){
     int cont = 0;
-    tPosicion pos = l->siguiente;
-    while(pos!=NULL){
+    tPosicion pos = l;
+    while(pos->siguiente != NULL){
         cont++;
         pos = pos->siguiente;
     }

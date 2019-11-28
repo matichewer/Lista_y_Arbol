@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 // Funciones auxiliares
-void (*eliminarElementoDelNodo)(tElemento);  // acá se guarda la funcion de a_destruir()
-void a_destruir_aux(tElemento elem);
-tPosicion buscarPos(tLista l, tNodo n);
-void fNoEliminar(){}
+static void (*eliminarElementoDelNodo)(tElemento);  // acá se guarda la funcion de a_destruir()
+static void a_destruir_aux(tElemento elem);
+static tPosicion buscarPos(tLista l, tNodo n);
+static void fNoEliminar(){}
 
 
 
@@ -16,9 +16,9 @@ Una referencia al árbol creado es referenciado en *A.
 **/
 void crear_arbol(tArbol * a){
     (*a) = (tArbol) malloc(sizeof( struct arbol));
-    ((*a)->raiz) = NULL;
     if(*a == NULL)
         exit(ARB_ERROR_MEMORIA);
+    ((*a)->raiz) = NULL;
 }
 
 /**
@@ -78,17 +78,23 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
  Si N no es la raíz de A y tiene hijos, estos pasan a ser hijos del padre de N, en el mismo orden y a partir de la posición que ocupa N en la lista de hijos de su padre.
 **/
 void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
-    // como chequeo que n es un nodo al arbol a?
 
-    tLista listaHijos = n->hijos;
-    int cantHijos= l_longitud(listaHijos);
+    tLista listaHijos;
+    int cantHijos, i;
+    tNodo nodo, nodo_hijo;
+    tLista listaPadre;
+    tPosicion pos_a_eliminar, pos_hijos;
+
+    listaHijos = n->hijos;
+    cantHijos = l_longitud(listaHijos);
+
     if ((a->raiz)==n){
         if (cantHijos==1){
-            tNodo nodo = l_recuperar(listaHijos, l_primera(listaHijos));
+            nodo = l_recuperar(listaHijos, l_primera(listaHijos));
             nodo->padre = NULL;
             fEliminar(a->raiz->elemento);
             a->raiz = nodo;
-            l_destruir(&(n->hijos),&fNoEliminar);
+            l_destruir(&(n->hijos), &fNoEliminar);
             free(n);
         }
         else{
@@ -103,14 +109,12 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
     }
     else{//caso general
         //l_insertar inserta izquierda de la posicion dada
-        tLista listaPadre = (n->padre)->hijos;
-        tPosicion pos_a_eliminar = buscarPos(listaPadre, n);
-
-        int i;
-        tPosicion pos_hijos = l_primera(listaHijos);
+        listaPadre = (n->padre)->hijos;
+        pos_a_eliminar = buscarPos(listaPadre, n);
+        pos_hijos = l_primera(listaHijos);
 
         for(i=0; i<cantHijos; i++){
-            tNodo nodo_hijo = l_recuperar(listaHijos, pos_hijos);
+            nodo_hijo = l_recuperar(listaHijos, pos_hijos);
             nodo_hijo->padre = n->padre;
             l_insertar(listaPadre,pos_a_eliminar, nodo_hijo);
             pos_a_eliminar = l_siguiente(listaPadre, pos_a_eliminar);
@@ -187,11 +191,11 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
         hijospadre=padre->hijos;
         pos=l_primera(hijospadre);
 
-        while( ( l_recuperar(hijospadre, pos) != n ) ){
+        while(( l_recuperar(hijospadre, pos) != n ))
             pos=l_siguiente(hijospadre, pos);
-        }
-        (*sa)->raiz=n;
-        (*sa)->raiz->padre=NULL;
+
+        (*sa)->raiz = n;
+        (*sa)->raiz->padre = NULL;
         l_eliminar(hijospadre, pos, &fNoEliminar);
     }
     else{
@@ -210,13 +214,14 @@ tPosicion buscarPos(tLista l, tNodo n){
     tPosicion toReturn = l_primera(l);
     tPosicion fin = l_fin(l);
 
+
     while( (toReturn!=fin) && (l_recuperar(l,toReturn) != n))
         toReturn=l_siguiente(l,toReturn);
 
-    if(l_recuperar(l,toReturn)==n)
-        return toReturn;
-    else
-        return NULL;
+    if (l_recuperar(l,toReturn)!=n)
+        toReturn=NULL;
+
+    return toReturn;
 }
 
 void a_destruir_aux(tElemento elem){
